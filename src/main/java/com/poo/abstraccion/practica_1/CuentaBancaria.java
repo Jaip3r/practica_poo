@@ -71,5 +71,10 @@ public class CuentaBancaria {
     public double consultarSaldo() {
         return this.saldo;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Número de Cuenta: " + this.getNumeroCuenta() + ", Titular: " + this.getTitular();
+    }
+
 }
