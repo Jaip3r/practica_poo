@@ -56,10 +56,7 @@ public class CuentaBancaria {
         if (cuentaDestino == null) {
             throw new IllegalArgumentException("La cuenta destino no puede ser nula.");
         }
-        if (this.numeroCuenta == cuentaDestino.getNumeroCuenta()) {
-            throw new IllegalArgumentException("No se puede depositar en la misma cuenta.");
-        }
-
+        
         this.transacciones[this.numTransacciones++] = new Transaccion("Depósito", monto, LocalDate.now(), cuentaDestino);
         this.saldo += monto;
     }
