@@ -73,4 +73,9 @@ public class Transaccion {
         return this.cuentaDestino.toString();
     }
 
+    @Override
+    public String toString() {
+        return "Transacción ID: " + idTransaccion + ", Tipo: " + tipoTransaccion + ", Monto: " + monto + ", Fecha: " + fecha + ", Cuenta Destino: [" + cuentaDestino.toString() + "]";
+    }
+
 }
