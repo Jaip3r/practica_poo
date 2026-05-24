@@ -1,10 +1,15 @@
 package com.poo.abstraccion.practica_1;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+
 public class CuentaBancaria {
     
     private int numeroCuenta;
     private String titular;
     private double saldo;
+    private Transaccion[] transacciones;
+    private int numTransacciones;
 
     private static int numeroCuentaAutoIncrementado = 1;
 
@@ -19,6 +24,8 @@ public class CuentaBancaria {
         this.titular = titular;
         this.saldo = saldo;
         this.numeroCuenta = CuentaBancaria.numeroCuentaAutoIncrementado++;
+        this.transacciones = new Transaccion[50];
+        this.numTransacciones = 0;
     }
 
     /**
@@ -42,10 +49,18 @@ public class CuentaBancaria {
      * @param monto el monto a depositar
      * @throws IllegalArgumentException si el monto es inválido
      */
-    public void depositar(double monto) {
+    public void depositar(double monto, CuentaBancaria cuentaDestino) {
         if (monto <= 0) {
             throw new IllegalArgumentException("El monto a depositar debe ser positivo.");
         }
+        if (cuentaDestino == null) {
+            throw new IllegalArgumentException("La cuenta destino no puede ser nula.");
+        }
+        if (this.numeroCuenta == cuentaDestino.getNumeroCuenta()) {
+            throw new IllegalArgumentException("No se puede depositar en la misma cuenta.");
+        }
+
+        this.transacciones[this.numTransacciones++] = new Transaccion("Depósito", monto, LocalDate.now(), cuentaDestino);
         this.saldo += monto;
     }
 
@@ -61,6 +76,8 @@ public class CuentaBancaria {
         if (monto > this.saldo) {
             throw new IllegalArgumentException("Fondos insuficientes para realizar el retiro.");
         }
+
+        this.transacciones[this.numTransacciones++] = new Transaccion("Retiro", monto, LocalDate.now(), this);
         this.saldo -= monto;
     }
 
@@ -70,6 +87,29 @@ public class CuentaBancaria {
      */
     public double consultarSaldo() {
         return this.saldo;
+    }
+
+    /**
+     * Consulta las últimas 5 transacciones realizadas en la cuenta.
+     * @return un arreglo de las últimas 5 transacciones realizadas en la cuenta
+     */
+    public Transaccion[] consultarUltimasTransacciones() {
+        Transaccion[] ultimas = new Transaccion[5];
+
+        for (int i = 0; i < 5; i++) {
+            if (i < this.numTransacciones) {
+                ultimas[i] = this.transacciones[this.numTransacciones - i - 1];
+            }
+        }
+        return ultimas;
+    }
+
+    /**
+     * Consulta las transacciones realizadas en la cuenta.
+     * @return un arreglo de transacciones realizadas en la cuenta
+     */
+    public Transaccion[] consultarTransacciones() {
+        return Arrays.copyOf(this.transacciones, this.numTransacciones);
     }
 
     @Override
