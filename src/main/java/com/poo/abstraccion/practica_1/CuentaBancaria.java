@@ -1,15 +1,16 @@
 package com.poo.abstraccion.practica_1;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CuentaBancaria {
     
     private int numeroCuenta;
     private String titular;
     private double saldo;
-    private Transaccion[] transacciones;
-    private int numTransacciones;
+    private List<Transaccion> transacciones;
 
     private static int numeroCuentaAutoIncrementado = 1;
 
@@ -24,8 +25,7 @@ public class CuentaBancaria {
         this.titular = titular;
         this.saldo = saldo;
         this.numeroCuenta = CuentaBancaria.numeroCuentaAutoIncrementado++;
-        this.transacciones = new Transaccion[50];
-        this.numTransacciones = 0;
+        this.transacciones = new ArrayList<>();
     }
 
     /**
@@ -49,18 +49,12 @@ public class CuentaBancaria {
      * @param monto el monto a depositar
      * @throws IllegalArgumentException si el monto es inválido
      */
-    public void depositar(double monto, CuentaBancaria cuentaDestino) {
+    public void depositar(double monto) {
         if (monto <= 0) {
             throw new IllegalArgumentException("El monto a depositar debe ser positivo.");
         }
-        if (cuentaDestino == null) {
-            throw new IllegalArgumentException("La cuenta destino no puede ser nula.");
-        }
-        if (this.numTransacciones >= this.transacciones.length) {
-            throw new IllegalStateException("Limite de transacciones alcanzado. No se pueden registrar más trasacciones en esta cuenta.");
-        }
         
-        this.transacciones[this.numTransacciones++] = new Transaccion("Depósito", monto, LocalDate.now(), cuentaDestino);
+        this.transacciones.add(new Transaccion(TipoTransaccion.DEPOSITO, monto, LocalDate.now(), this));
         this.saldo += monto;
     }
 
@@ -76,11 +70,8 @@ public class CuentaBancaria {
         if (monto > this.saldo) {
             throw new IllegalArgumentException("Fondos insuficientes para realizar el retiro.");
         }
-        if (this.numTransacciones >= this.transacciones.length) {
-            throw new IllegalStateException("Limite de transacciones alcanzado. No se pueden registrar más trasacciones en esta cuenta.");
-        }
 
-        this.transacciones[this.numTransacciones++] = new Transaccion("Retiro", monto, LocalDate.now(), this);
+        this.transacciones.add(new Transaccion(TipoTransaccion.RETIRO, monto, LocalDate.now(), this));
         this.saldo -= monto;
     }
 
@@ -94,29 +85,14 @@ public class CuentaBancaria {
 
     /**
      * Consulta las últimas 5 transacciones realizadas en la cuenta.
-     * @return un arreglo de las últimas 5 transacciones realizadas en la cuenta
+     * @return una lista de las últimas 5 transacciones realizadas en la cuenta
      */
-    public Transaccion[] consultarUltimasTransacciones() {
-        if (this.numTransacciones == 0) {
-            return new Transaccion[0];
+    public List<Transaccion> consultarUltimasTransacciones() {
+        if (this.transacciones.isEmpty()) {
+            return new ArrayList<>();
         }
 
-        Transaccion[] ultimas = new Transaccion[5];
-
-        for (int i = 0; i < 5; i++) {
-            if (i < this.numTransacciones) {
-                ultimas[i] = this.transacciones[this.numTransacciones - i - 1];
-            }
-        }
-        return ultimas;
-    }
-
-    /**
-     * Consulta las transacciones realizadas en la cuenta.
-     * @return un arreglo de transacciones realizadas en la cuenta
-     */
-    public Transaccion[] consultarTransacciones() {
-        return Arrays.copyOf(this.transacciones, this.numTransacciones);
+        return Collections.unmodifiableList(this.transacciones.subList(Math.max(0, this.transacciones.size() - 5), this.transacciones.size()));
     }
 
     @Override

@@ -5,16 +5,15 @@ import java.time.LocalDate;
 public class Transaccion {
     
     private int idTransaccion;
-    private String tipoTransaccion; // "Depósito" o "Retiro"
-    private double monto;
-    private LocalDate fecha;
-    private CuentaBancaria cuentaDestino;
+    private final TipoTransaccion tipoTransaccion;
+    private final double monto;
+    private final LocalDate fecha;
 
     private static int idTransaccionAutoIncrementado = 1;
 
-    public Transaccion(String tipoTransaccion, double monto, LocalDate fecha, CuentaBancaria cuentaDestino) {
-        if (tipoTransaccion == null || (!tipoTransaccion.equalsIgnoreCase("Depósito") && !tipoTransaccion.equalsIgnoreCase("Retiro"))) {
-            throw new IllegalArgumentException("El tipo de transacción debe ser 'Depósito' o 'Retiro'.");
+    public Transaccion(TipoTransaccion tipoTransaccion, double monto, LocalDate fecha, CuentaBancaria cuentaDestino) {
+        if (tipoTransaccion == null) {
+            throw new IllegalArgumentException("El tipo de transacción no puede ser nulo.");
         }
         if (monto <= 0) {
             throw new IllegalArgumentException("El monto de la transacción debe ser positivo.");
@@ -29,7 +28,6 @@ public class Transaccion {
         this.tipoTransaccion = tipoTransaccion;
         this.monto = monto;
         this.fecha = fecha;
-        this.cuentaDestino = cuentaDestino;
         this.idTransaccion = Transaccion.idTransaccionAutoIncrementado++;
     }
 
@@ -46,7 +44,7 @@ public class Transaccion {
      * @return el tipo de transacción
      */
     public String getTipoTransaccion() {
-        return this.tipoTransaccion;
+        return this.tipoTransaccion.toString();
     }
 
     /**
@@ -65,17 +63,9 @@ public class Transaccion {
         return this.fecha;
     }
 
-    /**
-     * Obtiene la información de la cuenta destino.
-     * @return la información de la cuenta destino
-     */
-    public String getInfoCuentaDestino() {
-        return this.cuentaDestino.toString();
-    }
-
     @Override
     public String toString() {
-        return "Transacción ID: " + idTransaccion + ", Tipo: " + tipoTransaccion + ", Monto: " + monto + ", Fecha: " + fecha + ", Cuenta Destino: [" + cuentaDestino.toString() + "]";
+        return "Transacción ID: " + idTransaccion + ", Tipo: " + tipoTransaccion.toString() + ", Monto: " + monto + ", Fecha: " + fecha ;
     }
 
 }
