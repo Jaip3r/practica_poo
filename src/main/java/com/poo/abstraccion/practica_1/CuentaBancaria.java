@@ -54,7 +54,7 @@ public class CuentaBancaria {
             throw new IllegalArgumentException("El monto a depositar debe ser positivo.");
         }
         
-        this.transacciones.add(new Transaccion(TipoTransaccion.DEPOSITO, monto, LocalDate.now(), this));
+        this.transacciones.add(new Transaccion(TipoTransaccion.DEPOSITO, monto, LocalDate.now()));
         this.saldo += monto;
     }
 
@@ -71,7 +71,7 @@ public class CuentaBancaria {
             throw new IllegalArgumentException("Fondos insuficientes para realizar el retiro.");
         }
 
-        this.transacciones.add(new Transaccion(TipoTransaccion.RETIRO, monto, LocalDate.now(), this));
+        this.transacciones.add(new Transaccion(TipoTransaccion.RETIRO, monto, LocalDate.now()));
         this.saldo -= monto;
     }
 

@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public class Transaccion {
     
-    private int idTransaccion;
+    private final int idTransaccion;
     private final TipoTransaccion tipoTransaccion;
     private final double monto;
     private final LocalDate fecha;
 
     private static int idTransaccionAutoIncrementado = 1;
 
-    public Transaccion(TipoTransaccion tipoTransaccion, double monto, LocalDate fecha, CuentaBancaria cuentaDestino) {
+    public Transaccion(TipoTransaccion tipoTransaccion, double monto, LocalDate fecha) {
         if (tipoTransaccion == null) {
             throw new IllegalArgumentException("El tipo de transacción no puede ser nulo.");
         }
@@ -20,9 +20,6 @@ public class Transaccion {
         }
         if (fecha == null) {
             throw new IllegalArgumentException("La fecha de la transacción no puede ser nula.");
-        }
-        if (cuentaDestino == null) {
-            throw new IllegalArgumentException("La cuenta destino no puede ser nula.");
         }
 
         this.tipoTransaccion = tipoTransaccion;
@@ -43,8 +40,8 @@ public class Transaccion {
      * Obtiene el tipo de transacción.
      * @return el tipo de transacción
      */
-    public String getTipoTransaccion() {
-        return this.tipoTransaccion.toString();
+    public TipoTransaccion getTipoTransaccion() {
+        return this.tipoTransaccion;
     }
 
     /**
@@ -65,7 +62,7 @@ public class Transaccion {
 
     @Override
     public String toString() {
-        return "Transacción ID: " + idTransaccion + ", Tipo: " + tipoTransaccion.toString() + ", Monto: " + monto + ", Fecha: " + fecha ;
+        return "Transacción ID: " + idTransaccion + ", Tipo: " + tipoTransaccion + ", Monto: " + monto + ", Fecha: " + fecha ;
     }
 
 }
