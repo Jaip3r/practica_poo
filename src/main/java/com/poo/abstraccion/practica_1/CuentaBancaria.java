@@ -56,6 +56,9 @@ public class CuentaBancaria {
         if (cuentaDestino == null) {
             throw new IllegalArgumentException("La cuenta destino no puede ser nula.");
         }
+        if (this.numTransacciones >= this.transacciones.length) {
+            throw new IllegalStateException("Limite de transacciones alcanzado. No se pueden registrar más trasacciones en esta cuenta.");
+        }
         
         this.transacciones[this.numTransacciones++] = new Transaccion("Depósito", monto, LocalDate.now(), cuentaDestino);
         this.saldo += monto;
@@ -72,6 +75,9 @@ public class CuentaBancaria {
         }
         if (monto > this.saldo) {
             throw new IllegalArgumentException("Fondos insuficientes para realizar el retiro.");
+        }
+        if (this.numTransacciones >= this.transacciones.length) {
+            throw new IllegalStateException("Limite de transacciones alcanzado. No se pueden registrar más trasacciones en esta cuenta.");
         }
 
         this.transacciones[this.numTransacciones++] = new Transaccion("Retiro", monto, LocalDate.now(), this);
@@ -91,6 +97,10 @@ public class CuentaBancaria {
      * @return un arreglo de las últimas 5 transacciones realizadas en la cuenta
      */
     public Transaccion[] consultarUltimasTransacciones() {
+        if (this.numTransacciones == 0) {
+            return new Transaccion[0];
+        }
+
         Transaccion[] ultimas = new Transaccion[5];
 
         for (int i = 0; i < 5; i++) {
