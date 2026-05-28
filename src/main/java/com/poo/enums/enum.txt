@@ -1,0 +1,12 @@
+Corresponde a un tipo de dato que permite definir un conjunto de constantes predefinidas. Funciona como
+un tipo de dato que restringe una variable a solo un número limitado de valores, mejorando la seguridad
+del tipo y la legibilidad del código.
+
+Los enums pueden tener métodos y campos al igual que las clases normales.
+
+Campos: Los enums pueden tener campos (variables) que almacenan datos asociados a cada constante del enum. 
+Estos campos se inicializan en el constructor del enum y pueden ser accedidos mediante métodos.
+
+Métodos: Los enums también pueden tener métodos, tanto estáticos como de instancia. Los métodos estáticos 
+se aplican a la clase enum en sí misma, mientras que los métodos de instancia se aplican a cada constante 
+individual del enum. 
