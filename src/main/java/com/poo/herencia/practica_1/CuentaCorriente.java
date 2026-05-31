@@ -35,6 +35,8 @@ public class CuentaCorriente extends CuentaBancaria {
             throw new IllegalArgumentException("No se puede retirar más del saldo disponible más el límite de sobregiro.");
         }
 
+        // No se delega a super.retirar() porque la lógica de sobregiro
+        // requiere una validación diferente de fondos que la del padre.
         this.ajustarSaldo(-monto);
         this.registrarTransaccion(new Transaccion(TipoTransaccion.RETIRO, monto, LocalDate.now()));
     }
