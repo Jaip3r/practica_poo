@@ -2,7 +2,7 @@ package com.poo.abstraccion.practica_1;
 
 import java.time.LocalDate;
 
-public class Transaccion {
+public final class Transaccion {
     
     private final int idTransaccion;
     private final TipoTransaccion tipoTransaccion;

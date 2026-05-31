@@ -95,6 +95,22 @@ public class CuentaBancaria {
         return Collections.unmodifiableList(this.transacciones.subList(Math.max(0, this.transacciones.size() - 5), this.transacciones.size()));
     }
 
+    /**
+     * Ajusta el saldo de la cuenta sumando el monto especificado. Permite a las clases derivadas modificar el saldo de la cuenta.
+     * @param monto el monto a sumar al saldo
+     */
+    protected void ajustarSaldo(double monto) {
+        this.saldo += monto;
+    }
+
+    /**
+     * Registra una transacción en la cuenta. Permite a las clases derivadas agregar transacciones.
+     * @param t la transacción a registrar
+     */
+    protected void registrarTransaccion(Transaccion t) {
+        this.transacciones.add(t);
+    }
+
     @Override
     public String toString() {
         return "Número de Cuenta: " + this.getNumeroCuenta() + ", Titular: " + this.getTitular();
