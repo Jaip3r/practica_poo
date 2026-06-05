@@ -1,58 +1,27 @@
 package com.poo.composicion;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.poo.polimorfismo.practica_1.CuentaBancaria;
 
 public class CuentaBancariaConNotificaciones extends CuentaBancaria {
     
-    private List<CanalNotificacion> canales;
+    private ServicioNotificaciones servicioNotificaciones;
 
-    public CuentaBancariaConNotificaciones(String titular, double saldo) {
+    public CuentaBancariaConNotificaciones(String titular, double saldo, ServicioNotificaciones servicioNotificaciones) {
         super(titular, saldo);
-        this.canales = new ArrayList<>();
+        this.servicioNotificaciones = servicioNotificaciones;
     }
 
     @Override
     public void depositar(double monto) {
         super.depositar(monto);
-        
-        if (monto > 1000000) {
-            String mensaje = "Se ha realizado un depósito de " + monto + " en la cuenta " + this.getNumeroCuenta();
-            for (CanalNotificacion canal : canales) {
-                canal.enviarNotificacion(this.getTitular(), mensaje);
-            }
-        }
+        this.servicioNotificaciones.notificarDeposito(this.getTitular(), this.getNumeroCuenta(), monto);
     }
 
     @Override
     public void retirar(double monto) {
         double saldoAnterior = this.consultarSaldo();
         super.retirar(monto);
-
-        if (monto > saldoAnterior * 0.5) {
-            String mensaje = "Se ha realizado un retiro de " + monto + " en la cuenta " + this.getNumeroCuenta();
-            for (CanalNotificacion canal : canales) {
-                canal.enviarNotificacion(this.getTitular(), mensaje);
-            }
-        }
-    }
-
-    /**
-     * Agrega un canal de notificación a la cuenta bancaria.
-     * @param canal El canal de notificación a agregar
-     */
-    public void agregarCanalNotificacion(CanalNotificacion canal) {
-        this.canales.add(canal);
-    }
-
-    /**
-     * Elimina un canal de notifiación de la cuenta bancaria.
-     * @param canal El canal de notificación a eliminar
-     */
-    public void eliminarCanalNotificacion(CanalNotificacion canal) {
-        this.canales.remove(canal);
+        this.servicioNotificaciones.notificarRetiro(this.getTitular(), this.getNumeroCuenta(), monto, saldoAnterior);
     }
 
 }
