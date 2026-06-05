@@ -36,7 +36,11 @@ public class App {
         // Calcular los intereses
         for (Rentable rentable : cuentasRentables) {
             double intereses = rentable.calcularIntereses();
-            System.out.println("Intereses calculados para la cuenta de " + ((CuentaBancaria) rentable).getTitular() + ": " + intereses);
+
+            // Seguro, solo mostramos el titular de la cuenta si es una instancia de CuentaBancaria (aunque no es preferible)
+            if (rentable instanceof CuentaBancaria) {
+                System.out.println("Intereses calculados para la cuenta de " + ((CuentaBancaria) rentable).getTitular() + ": " + intereses);
+            }
         }
         
     }
